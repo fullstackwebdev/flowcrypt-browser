@@ -443,3 +443,7 @@ var index$1 = unwrapExports(index);
 return index$1;
 
 })));
+
+if(window.flowcrypt_profile) {
+  window.flowcrypt_profile.add('anchorme.js');
+}

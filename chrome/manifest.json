@@ -49,6 +49,7 @@
   ],
   "background": {
     "scripts": [
+      "/js/profile/start.js",
       "/lib/jquery.min.js",
       "/lib/openpgp.js",
       "/lib/require.js",

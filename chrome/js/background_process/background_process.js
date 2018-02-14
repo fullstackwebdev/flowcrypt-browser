@@ -4,17 +4,19 @@
 
 console.log('background_process.js starting');
 
-let background_process_start_reason = 'browser_start';
-chrome.runtime.onInstalled.addListener(function(event){
-  background_process_start_reason = event.reason;
-});
-function get_background_process_start_reason() {
-  return background_process_start_reason;
-}
+openpgp.initWorker({path: 'lib/openpgp.worker.js'});
 
-migrate_global(function () {
-  window.flowcrypt_storage.set(null, { version: catcher.version('int') });
-});
+// let background_process_start_reason = 'browser_start';
+// chrome.runtime.onInstalled.addListener(function(event){
+//   background_process_start_reason = event.reason;
+// });
+// function get_background_process_start_reason() {
+//   return background_process_start_reason;
+// }
+//
+// migrate_global(function () {
+//   window.flowcrypt_storage.set(null, { version: catcher.version('int') });
+// });
 
 tool.browser.message.listen_background({
   close_popup: close_popup_handler,
@@ -24,6 +26,7 @@ tool.browser.message.listen_background({
   attest_packet_received: attest_packet_received_handler,
   update_uninstall_url: update_uninstall_url,
   get_active_tab_info: get_active_tab_info,
+  bg_exec: execute_in_background_process_and_respond_when_done,
   runtime: (message, sender, respond) => respond({ environment: catcher.environment(), version: catcher.version() }),
   ping: (message, sender, respond) => respond(true),
   _tab_: (request, sender, respond) => {
@@ -37,7 +40,7 @@ tool.browser.message.listen_background({
   },
 });
 
-update_uninstall_url();
+// update_uninstall_url();
 
 window.flowcrypt_storage.get(null, 'errors', storage => {
   if(storage.errors && storage.errors.length && storage.errors.length > 100) {
@@ -50,9 +53,9 @@ if(!localStorage.settings_seen) {
   localStorage.settings_seen = true;
 }
 
-inject_cryptup_into_webmail_if_needed();
+// inject_cryptup_into_webmail_if_needed();
 
-schedule_cryptup_subscription_level_check();
+// schedule_cryptup_subscription_level_check();
 
 function open_settings_page_handler(message, sender, respond) {
   open_settings_page(message.path, message.account_email, message.page, message.page_url_params);
@@ -124,4 +127,29 @@ function close_popup_handler(request, sender, respond) {
   chrome.tabs.query(request, tabs => {
     chrome.tabs.remove(tool.arr.select(tabs, 'id'));
   });
+}
+
+function execute_in_background_process_and_respond_when_done(request, sender, respond) {
+  console.log(respond);
+  console.log(request.path);
+  console.log(request.args);
+  let f = window;
+  let has_callback = false;
+  let args = (request.args || []).map(arg => {
+    if(arg === tool.env.callback_placeholder) {
+      has_callback = true;
+      return respond;
+    } else {
+      return arg;
+    }
+  });
+  tool.each(request.path.split('.'), (i, step) => {
+    f = f[step];
+  });
+  console.log(f);
+  console.log(args);
+  let returned = f.apply(null, args);
+  if(!has_callback) {
+    respond(returned);
+  }
 }

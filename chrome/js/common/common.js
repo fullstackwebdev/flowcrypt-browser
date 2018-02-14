@@ -4,6 +4,8 @@
 
 (function ( /* ALL TOOLS */ ) {
 
+  // openpgp.initWorker({path: 'openpgp.worker.min.js'});
+
   var tool = window.tool = {
     str: {
       parse_email: str_parse_email,
@@ -46,6 +48,7 @@
       set_up_require: env_set_up_require,
       increment: env_increment,
       webmails: env_webmails,
+      callback_placeholder: '!@#$%^&*():callback_placeholder_for_background_page',
     },
     arr: {
       unique: arr_unique,
@@ -158,83 +161,83 @@
       }
     },
     api: {
-      auth: {
-        window: api_auth_window,
-        parse_id_token: api_auth_parse_id_token,
-      },
-      error: {
-        network: 'API_ERROR_NETWORK',
-      },
-      google: {
-        user_info: api_google_user_info,
-        auth: api_google_auth,
-        auth_popup: google_auth_window_show_and_respond_to_auth_request,
-      },
-      common: {
-        message: api_common_email_message_object,
-        reply_correspondents: api_common_reply_correspondents,
-      },
+    //   auth: {
+    //     window: api_auth_window,
+    //     parse_id_token: api_auth_parse_id_token,
+    //   },
+    //   error: {
+    //     network: 'API_ERROR_NETWORK',
+    //   },
+    //   google: {
+    //     user_info: api_google_user_info,
+    //     auth: api_google_auth,
+    //     auth_popup: google_auth_window_show_and_respond_to_auth_request,
+    //   },
+    //   common: {
+    //     message: api_common_email_message_object,
+    //     reply_correspondents: api_common_reply_correspondents,
+    //   },
       gmail: {
-        query: {
-          or: api_gmail_query_or,
-          backups: api_gmail_query_backups,
-        },
+    //     query: {
+    //       or: api_gmail_query_or,
+    //       backups: api_gmail_query_backups,
+    //     },
         scope: api_gmail_scope,
         has_scope: api_gmail_has_scope,
-        thread_get: api_gmail_thread_get,
-        draft_create: api_gmail_draft_create,
-        draft_delete: api_gmail_draft_delete,
-        draft_update: api_gmail_draft_update,
-        draft_get: api_gmail_draft_get,
-        draft_send: api_gmail_draft_send, // todo - not used yet, and should be
-        message_send: api_gmail_message_send,
-        message_list: api_gmail_message_list,
-        message_get: api_gmail_message_get,
-        attachment_get: api_gmail_message_attachment_get,
-        find_header: api_gmail_find_header,
-        find_attachments: api_gmail_find_attachments,
-        find_bodies: api_gmail_find_bodies,
-        fetch_attachments: api_gmail_fetch_attachments,
-        search_contacts: api_gmail_search_contacts,
-        extract_armored_block: gmail_api_extract_armored_block,
-        fetch_messages_based_on_query_and_extract_first_available_header: api_gmail_fetch_messages_based_on_query_and_extract_first_available_header,
-        fetch_key_backups: api_gmail_fetch_key_backups,
+    //     thread_get: api_gmail_thread_get,
+    //     draft_create: api_gmail_draft_create,
+    //     draft_delete: api_gmail_draft_delete,
+    //     draft_update: api_gmail_draft_update,
+    //     draft_get: api_gmail_draft_get,
+    //     draft_send: api_gmail_draft_send, // todo - not used yet, and should be
+    //     message_send: api_gmail_message_send,
+    //     message_list: api_gmail_message_list,
+    //     message_get: api_gmail_message_get,
+    //     attachment_get: api_gmail_message_attachment_get,
+    //     find_header: api_gmail_find_header,
+    //     find_attachments: api_gmail_find_attachments,
+    //     find_bodies: api_gmail_find_bodies,
+    //     fetch_attachments: api_gmail_fetch_attachments,
+    //     search_contacts: api_gmail_search_contacts,
+    //     extract_armored_block: gmail_api_extract_armored_block,
+    //     fetch_messages_based_on_query_and_extract_first_available_header: api_gmail_fetch_messages_based_on_query_and_extract_first_available_header,
+    //     fetch_key_backups: api_gmail_fetch_key_backups,
       },
-      attester: {
-        lookup_email: api_attester_lookup_email,
-        initial_legacy_submit: api_attester_initial_legacy_submit,
-        initial_confirm: api_attester_initial_confirm,
-        replace_request: api_attester_replace_request,
-        replace_confirm: api_attester_replace_confirm,
-        test_welcome: api_attester_test_welcome,
-        packet: {
-          create_sign: api_attester_packet_create_sign,
-          parse: api_attester_packet_parse,
-        },
-      },
-      cryptup: {
-        auth_error: api_cryptup_auth_error,
-        url: api_cryptup_url,
-        help_feedback: api_cryptup_help_feedback,
-        help_uninstall: api_cryptup_help_uninstall,
-        account_login: api_cryptup_account_login,
-        account_check: api_cryptup_account_check,
-        account_check_sync: api_cryptup_account_check_sync,
-        account_update: api_cryptup_account_update,
-        account_subscribe: api_cryptup_account_subscribe,
-        message_presign_files: api_cryptup_message_presign_files,
-        message_confirm_files: api_cryptup_message_confirm_files,
-        message_upload: api_cryptup_message_upload,  // todo - DEPRECATE THIS. Send as JSON to message/store
-        message_token: api_cryptup_message_token,
-        message_expiration: api_cryptup_message_expiration,
-        message_reply: api_cryptup_message_reply,
-        message_contact: api_cryptup_message_contact,
-        link_message: api_cryptup_link_message,
-        link_me: api_cryptup_link_me,
-      },
-      aws: {
-        s3_upload: api_aws_s3_upload, // ([{base_url, fields, attachment}, ...], cb)
-      }
+    //   attester: {
+    //     lookup_email: api_attester_lookup_email,
+    //     initial_legacy_submit: api_attester_initial_legacy_submit,
+    //     initial_confirm: api_attester_initial_confirm,
+    //     replace_request: api_attester_replace_request,
+    //     replace_confirm: api_attester_replace_confirm,
+    //     test_welcome: api_attester_test_welcome,
+    //     packet: {
+    //       create_sign: api_attester_packet_create_sign,
+    //       parse: api_attester_packet_parse,
+    //     },
+    //   },
+    //   cryptup: {
+    //     auth_error: api_cryptup_auth_error,
+    //     url: api_cryptup_url,
+    //     help_feedback: api_cryptup_help_feedback,
+    //     help_uninstall: api_cryptup_help_uninstall,
+    //     account_login: api_cryptup_account_login,
+    //     account_check: api_cryptup_account_check,
+    //     account_check_sync: api_cryptup_account_check_sync,
+    //     account_update: api_cryptup_account_update,
+    //     account_subscribe: api_cryptup_account_subscribe,
+    //     message_presign_files: api_cryptup_message_presign_files,
+    //     message_confirm_files: api_cryptup_message_confirm_files,
+    //     message_upload: api_cryptup_message_upload,  // todo - DEPRECATE THIS. Send as JSON to message/store
+    //     message_token: api_cryptup_message_token,
+    //     message_expiration: api_cryptup_message_expiration,
+    //     message_reply: api_cryptup_message_reply,
+    //     message_contact: api_cryptup_message_contact,
+    //     link_message: api_cryptup_link_message,
+    //     link_me: api_cryptup_link_me,
+    //   },
+    //   aws: {
+    //     s3_upload: api_aws_s3_upload, // ([{base_url, fields, attachment}, ...], cb)
+    //   }
     },
     value: function(v) {
       return {
@@ -894,6 +897,28 @@
 
   function file_keyinfo_as_pubkey_attachment(keyinfo) {
     return file_attachment('0x' + keyinfo.longid + '.asc', 'application/pgp-keys', keyinfo.public);
+  }
+
+  function file_treat_as(attachment) {
+    if(tool.value(attachment.name).in(['PGPexch.htm.pgp', 'PGPMIME version identification'])) {
+      return 'hidden';  // PGPexch.htm.pgp is html alternative of textual body content produced by PGP Desktop and GPG4o
+    } else if(attachment.name === 'signature.asc' || attachment.type === 'application/pgp-signature') {
+      return  'signature';
+    } else if(!attachment.name && !tool.value('image/').in(attachment.type)) { // attachment.name may be '' or undefined - catch either
+      return attachment.size < 100 ? 'hidden' : 'message';
+    } else if(tool.value(attachment.name).in(['message', 'message.asc', 'encrypted.asc', 'encrypted.eml.pgp'])) {
+      return 'message';
+    } else if(attachment.name.match(/(\.pgp$)|(\.gpg$)|(\.[a-zA-Z0-9]{3,4}\.asc$)/g)) { // ends with one of .gpg, .pgp, .???.asc, .????.asc
+      return 'encrypted';
+    } else if(attachment.name.match(/^(0|0x)?[A-F0-9]{8}([A-F0-9]{8})?\.asc$/g)) { // name starts with a key id
+      return 'public_key';
+    } else if(tool.value('public').in(attachment.name.toLowerCase()) && attachment.name.match(/[A-F0-9]{8}.*\.asc$/g)) { // name contains the word "public", any key id and ends with .asc
+      return 'public_key';
+    } else if(attachment.name.match(/\.asc$/) && attachment.size < 100000 && !attachment.inline) {
+      return 'message';
+    } else {
+      return 'standard';
+    }
   }
 
   /* tool.mime */
@@ -2022,7 +2047,10 @@
    * @returns {boolean}: continue to next attempt
    */
   function chained_decryption_result_collector(callback, result) {
+    window.flowcrypt_profile.add('got result');
     if(result.success) {
+      window.flowcrypt_profile.add('return result');
+      window.flowcrypt_profile.print();
       callback(result); // callback the moment there is successful decrypt
       return false; // do not try again
     } else if(result.counts.attempts === result.counts.rounds && !result.counts.decrypted) {
@@ -2074,6 +2102,7 @@
   }
 
   function crypto_message_decrypt(db, account_email, encrypted_data, message_password, callback, output_format) {
+    window.flowcrypt_profile.add('decrypt_start');
     var armored_encrypted = tool.value(crypto_armor_headers('message').begin).in(encrypted_data);
     var armored_signed_only = tool.value(crypto_armor_headers('signed_message').begin).in(encrypted_data);
     var is_armored = armored_encrypted || armored_signed_only;
@@ -2091,6 +2120,7 @@
       return;
     }
     get_sorted_keys_for_message(db, account_email, message, function (keys) {
+      window.flowcrypt_profile.add('get_sorted_keys_for_message');
       var counts = zeroed_decrypt_error_counts(keys);
       if(armored_signed_only) {
         if(!message.text) {
@@ -2107,6 +2137,7 @@
           var keyinfos_for_looper = keys.with_passphrases.slice(); // copy keyinfo array
           var keep_trying_until_decrypted_or_all_failed = function () {
             catcher.try(function () {
+              window.flowcrypt_profile.add('beginning attempt');
               if(!counts.decrypted && keyinfos_for_looper.length) {
                 try {
                   openpgp.decrypt(get_decrypt_options(message, keyinfos_for_looper.shift(), is_armored, message_password, output_format)).then(function (decrypted) {
@@ -2137,6 +2168,7 @@
               }
             })();
           };
+          window.flowcrypt_profile.add('before first attempt');
           keep_trying_until_decrypted_or_all_failed(); // first attempt
         }
       }
@@ -2279,409 +2311,9 @@
     ];
   }
 
-  /* tool.api */
 
-  function get_ajax_progress_xhr(progress_callbacks) {
-    var progress_reporting_xhr = new window.XMLHttpRequest();
-    if(typeof progress_callbacks.upload === 'function') {
-      progress_reporting_xhr.upload.addEventListener('progress', function(evt) {
-        progress_callbacks.upload(evt.lengthComputable ? parseInt((evt.loaded / evt.total) * 100) : null);
-      }, false);
-    }
-    if(typeof progress_callbacks.download === 'function') {
-      progress_reporting_xhr.onprogress = function (evt) {
-        progress_callbacks.download(evt.lengthComputable ? Math.floor((evt.loaded / evt.total) * 100) : null, evt.loaded, evt.total);
-      };
-    }
-    return progress_reporting_xhr;
-  }
+  /* tool.api.aws */
 
-  function api_auth_window(auth_url, window_closed_by_user) {
-    var auth_code_window = window.open(auth_url, '_blank', 'height=600,left=100,menubar=no,status=no,toolbar=no,top=100,width=500');
-    var window_closed_timer = setInterval(function () {
-      if(auth_code_window.closed) {
-        clearInterval(window_closed_timer);
-        window_closed_by_user();
-      }
-    }, 500);
-    return function() {
-      clearInterval(window_closed_timer);
-      auth_code_window.close();
-    };
-  }
-
-  function api_call(base_url, path, values, format, progress, headers, response_format, method) {
-    progress = progress || {};
-    if(format === 'JSON' && values === null) {
-      var formatted_values = undefined;
-      var content_type = undefined;
-    } else if(format === 'JSON') {
-      var formatted_values = JSON.stringify(values);
-      var content_type = 'application/json; charset=UTF-8';
-    } else if(format === 'FORM') {
-      var formatted_values = new FormData();
-      tool.each(values, function (name, value) {
-        if(typeof value === 'object' && value.name && value.content && value.type) {
-          formatted_values.append(name, new Blob([value.content], { type: value.type }), value.name); // todo - type should be just app/pgp? for privacy
-        } else {
-          formatted_values.append(name, value);
-        }
-      });
-      var content_type = false;
-    } else {
-      throw Error('unknown format:' + String(format));
-    }
-    return catcher.Promise(function(resolve, reject) {
-      $.ajax({
-        xhr: function() {
-          return get_ajax_progress_xhr(progress);
-        },
-        url: base_url + path,
-        method: method || 'POST',
-        data: formatted_values,
-        dataType: response_format || 'json',
-        crossDomain: true,
-        headers: headers || undefined,
-        processData: false,
-        contentType: content_type,
-        async: true,
-        timeout: typeof progress.upload === 'function' || typeof progress.download === 'function' ? undefined : 20000,
-        success: function (response) {
-          catcher.try(function () {
-            if(response && typeof response === 'object' && typeof response.error === 'object') {
-              reject(response.error);
-            } else {
-              resolve(response);
-            }
-          })();
-        },
-        error: function (XMLHttpRequest, status, error) {
-          catcher.try(function () {
-            if(XMLHttpRequest.status === 0) {
-              reject({code: null, message: 'Internet connection not available', internal: 'network'});
-            } else {
-              reject({code: XMLHttpRequest.status, message: String(error)});
-            }
-          })();
-        },
-      });
-    });
-  }
-
-  function api_auth_parse_id_token(id_token) {
-    return JSON.parse(atob(id_token.split(/\./g)[1]));
-  }
-
-  /* tool.api.common */
-
-  function api_common_email_message_object(account_email, from, to, subject, body, attachments, thread_referrence) {
-    from = from || '';
-    to = to || '';
-    subject = subject || '';
-    // var primary_pubkey = storage.keys_get(account_email, 'primary'); // todo - changing to async - add back later
-    return {
-      // headers: (typeof exports !== 'object' && primary_pubkey !== null) ? { // todo - make it work in electron as well
-      //   OpenPGP: 'id=' + primary_pubkey.fingerprint,
-      // } : {},
-      headers: {},
-      from: from,
-      to: typeof to === 'object' ? to : to.split(','),
-      subject: subject,
-      body: typeof body === 'object' ? body : {'text/plain': body},
-      attachments: attachments || [],
-      thread: thread_referrence || null,
-    };
-  }
-
-  function api_common_reply_correspondents(account_email, addresses, last_message_sender, last_message_recipients) {
-    var reply_to_estimate = [last_message_sender].concat(last_message_recipients);
-    var reply_to = [];
-    var my_email = account_email;
-    tool.each(reply_to_estimate, function (i, email) {
-      if(email) {
-        if(tool.value(tool.str.parse_email(email).email).in(addresses)) { // my email
-          my_email = email;
-        } else if(!tool.value(tool.str.parse_email(email).email).in(reply_to)) { // skip duplicates
-          reply_to.push(tool.str.parse_email(email).email); // reply to all except my emails
-        }
-      }
-    });
-    if(!reply_to.length) { // happens when user sends email to itself - all reply_to_estimage contained his own emails and got removed
-      reply_to = tool.arr.unique(reply_to_estimate);
-    }
-    return {to: reply_to, from: my_email};
-  }
-
-  /* tool.api.google */
-
-  var google_oauth2 = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getManifest ? chrome.runtime.getManifest().oauth2 : null;
-  var api_google_auth_responders = {};
-  var API_GOOGLE_AUTH_RESPONDED = 'RESPONDED';
-
-  function api_google_auth(auth_request, respond) {
-    browser_message_tab_id(function(tab_id) {
-      auth_request.tab_id = tab_id;
-      storage.get(auth_request.account_email, ['google_token_access', 'google_token_expires', 'google_token_refresh', 'google_token_scopes'], function (s) {
-        if (typeof s.google_token_access === 'undefined' || typeof s.google_token_refresh === 'undefined' || api_google_has_new_scope(auth_request.scopes, s.google_token_scopes, auth_request.omit_read_scope)) {
-          if(!env_is_background_script()) {
-            google_auth_window_show_and_respond_to_auth_request(auth_request, s.google_token_scopes, respond);
-          } else {
-            respond({success: false, error: 'Cannot produce auth window from background script'});
-          }
-        } else {
-          google_auth_refresh_token(s.google_token_refresh, function (success, result) {
-            if (!success && result === tool.api.error.network) {
-              respond({success: false, error: tool.api.error.network});
-            } else if (typeof result.access_token !== 'undefined') {
-              google_auth_save_tokens(auth_request.account_email, result, s.google_token_scopes, function () {
-                respond({ success: true, message_id: auth_request.message_id, account_email: auth_request.account_email }); //todo: email should be tested first with google_auth_check_email?
-              });
-            } else if(!env_is_background_script()) {
-              google_auth_window_show_and_respond_to_auth_request(auth_request, s.google_token_scopes, respond);
-            } else {
-              respond({success: false, error: 'Cannot show auth window from background script'});
-            }
-          });
-        }
-      });
-    });
-  }
-
-  function api_google_has_new_scope(new_scopes, original_scopes, omit_read_scope) {
-    if(!(original_scopes || []).length) { // no original scopes
-      return true;
-    }
-    if(!(new_scopes || []).length) { // no new scopes specified
-      return(original_scopes.length === 2 && !omit_read_scope); // however, previously there were only two of three scopes, and third was not omitted this time
-    }
-    for(var i = 0; i < new_scopes.length; i++) {
-      if(!tool.value(new_scopes[i]).in(original_scopes)) {
-        return true; // found a new scope
-      }
-    }
-    return false; // no new scope found
-  }
-
-  function api_google_auth_state_pack(status_object) {
-    return google_oauth2.state_header + JSON.stringify(status_object);
-  }
-
-  function api_google_auth_code_url(auth_request) {
-    return env_url_create(google_oauth2.url_code, {
-      client_id: google_oauth2.client_id,
-      response_type: 'code',
-      access_type: 'offline',
-      state: api_google_auth_state_pack(auth_request),
-      redirect_uri: google_oauth2.url_redirect,
-      scope: auth_request.scopes.join(' '),
-      login_hint: auth_request.account_email,
-    });
-  }
-
-  function google_auth_window_show_and_respond_to_auth_request(auth_request, current_google_token_scopes, respond) {
-    auth_request.auth_responder_id = tool.str.random(20);
-    api_google_auth_responders[auth_request.auth_responder_id] = respond;
-    auth_request.scopes = auth_request.scopes || [];
-    tool.each(google_oauth2.scopes, function (i, scope) {
-      if(!tool.value(scope).in(auth_request.scopes)) {
-        if(scope !== tool.api.gmail.scope('read') || !auth_request.omit_read_scope) { // leave out read messages permission if user chose so
-          auth_request.scopes.push(scope);
-        }
-      }
-    });
-    tool.each(current_google_token_scopes || [], function (i, scope) {
-      if(!tool.value(scope).in(auth_request.scopes)) {
-        auth_request.scopes.push(scope);
-      }
-    });
-    var result_listener = { google_auth_window_result: function(result, sender, respond) { google_auth_window_result_handler(auth_request.auth_responder_id, result, respond); } };
-    if(auth_request.tab_id !== null) {
-      browser_message_listen(result_listener, auth_request.tab_id);
-    } else {
-      browser_message_listen_background(result_listener);
-    }
-    var auth_code_window = window.open(api_google_auth_code_url(auth_request), '_blank', 'height=600,left=100,menubar=no,status=no,toolbar=no,top=100,width=500');
-    // auth window will show up. Inside the window, google_auth_code.js gets executed which will send
-    // a 'gmail_auth_code_result' chrome message to 'google_auth.google_auth_window_result_handler' and close itself
-    if(env_browser().name !== 'firefox') {
-      var window_closed_timer = setInterval(api_google_auth_window_closed_watcher, 250);
-    }
-
-    function api_google_auth_window_closed_watcher() {
-      if(auth_code_window !== null && typeof auth_code_window !== 'undefined' && auth_code_window.closed) { // on firefox it seems to be sometimes returning a null, due to popup blocking
-        clearInterval(window_closed_timer);
-        if(api_google_auth_responders[auth_request.auth_responder_id] !== API_GOOGLE_AUTH_RESPONDED) {
-          // if user did clock Allow/Deny on auth, race condition is prevented, because auth_responders[] are always marked as RESPONDED before closing window.
-          // thus it's impossible for another process to try to respond before the next line
-          // that also means, if window got closed and it's not marked as RESPONDED, it was the user closing the window manually, which is what we're watching for.
-          api_google_auth_responders[auth_request.auth_responder_id]({success: false, result: 'closed', account_email: auth_request.account_email, message_id: auth_request.message_id});
-          api_google_auth_responders[auth_request.auth_responder_id] = API_GOOGLE_AUTH_RESPONDED;
-        }
-      }
-    }
-  }
-
-  function google_auth_save_tokens(account_email, tokens_object, scopes, callback) {
-    var to_save = {
-      google_token_access: tokens_object.access_token,
-      google_token_expires: new Date().getTime() + tokens_object.expires_in * 1000,
-      google_token_scopes: scopes,
-    };
-    if(typeof tokens_object.refresh_token !== 'undefined') {
-      to_save.google_token_refresh = tokens_object.refresh_token;
-    }
-    storage.set(account_email, to_save, callback);
-  }
-
-  function google_auth_get_tokens(code, callback, retries_left) {
-    $.ajax({
-      url: tool.env.url_create(google_oauth2.url_tokens, { grant_type: 'authorization_code', code: code, client_id: google_oauth2.client_id, redirect_uri: google_oauth2.url_redirect }),
-      method: 'POST',
-      crossDomain: true,
-      async: true,
-      success: function (response) {
-        callback(response);
-      },
-      error: function (XMLHttpRequest, status, error) {
-        if(!retries_left) {
-          callback({ request: XMLHttpRequest, status: status, error: error });
-        } else {
-          setTimeout(function () { // retry again
-            google_auth_get_tokens(code, callback, retries_left - 1);
-          }, 2000);
-        }
-      },
-    });
-  }
-
-  function google_auth_refresh_token(refresh_token, callback) {
-    $.ajax({
-      url: tool.env.url_create(google_oauth2.url_tokens, { grant_type: 'refresh_token', refresh_token: refresh_token, client_id: google_oauth2.client_id }),
-      method: 'POST',
-      crossDomain: true,
-      async: true,
-      success: function (response) {
-        callback(true, response);
-      },
-      error: function (XMLHttpRequest, status, error) {
-        if(XMLHttpRequest.status === 0 && status === 'error') { // connection error
-          callback(false, tool.api.error.network);
-        } else {
-          callback(false, { request: XMLHttpRequest, status: status, error: error });
-        }
-      },
-    });
-  }
-
-  function google_auth_check_email(expected_email, access_token, callback) {
-    $.ajax({
-      url: 'https://www.googleapis.com/gmail/v1/users/me/profile',
-      method: 'GET',
-      headers: { 'Authorization': 'Bearer ' + access_token },
-      crossDomain: true,
-      contentType: 'application/json; charset=UTF-8',
-      async: true,
-      success: function (response) {
-        callback(response.emailAddress);
-      },
-      error: function (response) {
-        console.log('google_auth_check_email error');
-        console.log(expected_email);
-        console.log(response);
-        callback(expected_email); //todo - handle better. On a network error, this could result in saving this wrongly. Should re-try two times with some delay, then call back.
-      },
-    });
-  }
-
-  function google_auth_window_result_handler(expected_responder_id, result, close_auth_window) {
-    if(result.state.auth_responder_id === expected_responder_id) {
-      var auth_responder = api_google_auth_responders[result.state.auth_responder_id];
-      if(auth_responder !== API_GOOGLE_AUTH_RESPONDED) {
-        api_google_auth_responders[result.state.auth_responder_id] = API_GOOGLE_AUTH_RESPONDED;
-        close_auth_window();
-        switch(result.result) {
-          case 'Success':
-            google_auth_get_tokens(result.params.code, function (tokens_object) {
-              if(typeof tokens_object.access_token !== 'undefined') {
-                google_auth_check_email(result.state.account_email, tokens_object.access_token, function (account_email) {
-                  google_auth_save_tokens(account_email, tokens_object, result.state.scopes, function () {
-                    auth_responder({account_email: account_email, success: true, result: 'success', message_id: result.state.message_id});
-                  });
-                });
-              } else { // got code but failed to use the code to fetch tokens
-                auth_responder({success: false, result: 'success', account_email: result.state.account_email, message_id: result.state.message_id});
-              }
-            }, 2);
-            break;
-          case 'Denied':
-            auth_responder({success: false, result: 'denied', error: result.params.error, account_email: result.state.account_email, message_id: result.state.message_id});
-            break;
-          case 'Error':
-            auth_responder({success: false, result: 'error', error: result.params.error, account_email: result.state.account_email, message_id: result.state.message_id});
-            break;
-        }
-      } else {
-        console.log('Ignoring expected_responder_id ' + expected_responder_id + ': API_GOOGLE_AUTH_RESPONDED previously');
-      }
-    }
-  }
-
-  function api_google_call(account_email, method, url, parameters, callback, fail_on_auth) {
-    storage.get(account_email, ['google_token_access', 'google_token_expires'], function (auth) {
-      var data = method === 'GET' || method === 'DELETE' ? parameters : JSON.stringify(parameters);
-      if(typeof auth.google_token_access !== 'undefined' && auth.google_token_expires > new Date().getTime()) { // have a valid gmail_api oauth token
-        $.ajax({
-          url: url,
-          method: method,
-          data: data,
-          headers: { 'Authorization': 'Bearer ' + auth.google_token_access },
-          crossDomain: true,
-          contentType: 'application/json; charset=UTF-8',
-          async: true,
-          success: function (response) {
-            catcher.try(function () {
-              callback(true, response);
-            })();
-          },
-          error: function (response) {
-            try {
-              var error_obj = JSON.parse(response.responseText);
-              if(typeof error_obj.error !== 'undefined' && error_obj.error.message === 'Invalid Credentials') {
-                google_api_handle_auth_error(account_email, method, url, parameters, callback, fail_on_auth, response, api_google_call);
-              } else {
-                response._error = error_obj.error;
-                catcher.try(function () {
-                  callback(false, response);
-                })();
-              }
-            } catch(err) {
-              catcher.try(function () {
-                response._error = {};
-                var re_title = /<title>([^<]+)<\/title>/mgi;
-                var title_match = re_title.exec(response.responseText);
-                if(title_match) {
-                  response._error.message = title_match[1];
-                }
-                callback(false, response);
-              })();
-            }
-          },
-        });
-      } else { // no valid gmail_api oauth token
-        google_api_handle_auth_error(account_email, method, url, parameters, callback, fail_on_auth, null, api_google_call);
-      }
-    });
-  }
-
-  function api_google_user_info(account_email, callback) {
-    api_google_call(account_email, 'GET', 'https://www.googleapis.com/oauth2/v1/userinfo', {
-      alt: 'json'
-    }, callback);
-  }
-
-  /* tool.api.gmail */
-
-  var USELESS_CONTACTS_FILTER = '-to:txt.voice.google.com -to:reply.craigslist.org -to:sale.craigslist.org -to:hous.craigslist.org';
   var api_gmail_scope_dict = {
     read: 'https://www.googleapis.com/auth/gmail.readonly',
     compose: 'https://www.googleapis.com/auth/gmail.compose',
@@ -2695,921 +2327,6 @@
     return scopes && tool.value(api_gmail_scope_dict[scope]).in(scopes)
   }
 
-  function api_gmail_call(account_email, method, resource, parameters, callback, fail_on_auth, progress, content_type) {
-    if(!account_email) {
-      throw new Error('missing account_email in api_gmail_call');
-    }
-    progress = progress || {};
-    storage.get(account_email, ['google_token_access', 'google_token_expires'], function (auth) {
-      if(typeof auth.google_token_access !== 'undefined' && auth.google_token_expires > new Date().getTime()) { // have a valid gmail_api oauth token
-        if(typeof progress.upload === 'function') {
-          var url = 'https://www.googleapis.com/upload/gmail/v1/users/me/' + resource + '?uploadType=multipart';
-          var data = parameters;
-        } else {
-          var url = 'https://www.googleapis.com/gmail/v1/users/me/' + resource;
-          if(method === 'GET' || method === 'DELETE') {
-            var data = parameters;
-          } else {
-            var data = JSON.stringify(parameters);
-          }
-        }
-        $.ajax({
-          xhr: function () {
-            return get_ajax_progress_xhr(progress);
-          },
-          url: url,
-          method: method,
-          data: data,
-          headers: { 'Authorization': 'Bearer ' + auth.google_token_access },
-          crossDomain: true,
-          contentType: content_type || 'application/json; charset=UTF-8',
-          async: true,
-          success: function (response) {
-            catcher.try(function () {
-              if(callback) {
-                callback(true, response);
-              }
-            })();
-          },
-          error: function (response) {
-            try {
-              var error_obj = JSON.parse(response.responseText);
-              if(typeof error_obj.error !== 'undefined' && error_obj.error.message === 'Invalid Credentials') {
-                google_api_handle_auth_error(account_email, method, resource, parameters, callback, fail_on_auth, response, api_gmail_call, progress, content_type);
-              } else {
-                response._error = error_obj.error;
-                if(callback) {
-                  catcher.try(function () {
-                    callback(false, response);
-                  })();
-                }
-              }
-            } catch(err) {
-              catcher.try(function () {
-                response._error = {};
-                var re_title = /<title>([^<]+)<\/title>/mgi;
-                var title_match = re_title.exec(response.responseText);
-                if(title_match) {
-                  response._error.message = title_match[1];
-                }
-                if(callback) {
-                  callback(false, response);
-                }
-              })();
-            }
-          },
-        });
-      } else { // no valid gmail_api oauth token
-        google_api_handle_auth_error(account_email, method, resource, parameters, callback, fail_on_auth, null, api_gmail_call, progress, content_type);
-      }
-    });
-  }
-
-  function google_api_handle_auth_error(account_email, method, resource, parameters, callback, fail_on_auth, error_response, base_api_function, progress, content_type) {
-    if(fail_on_auth !== true) {
-      api_google_auth({ account_email: account_email }, function (response) {
-        if(response && response.success === false && response.error === tool.api.error.network) {
-          callback(false, tool.api.error.network);
-        } else { //todo: error handling for other bad situations
-          base_api_function(account_email, method, resource, parameters, callback, true, progress, content_type);
-        }
-      });
-    } else {
-      callback(false, error_response);
-    }
-  }
-
-  function api_gmail_thread_get(account_email, thread_id, format, get_thread_callback) {
-    api_gmail_call(account_email, 'GET', 'threads/' + thread_id, {
-      format: format
-    }, get_thread_callback);
-  }
-
-  function api_gmail_draft_create(account_email, mime_message, thread_id, callback) {
-    api_gmail_call(account_email, 'POST', 'drafts', {
-      message: {
-        raw: tool.str.base64url_encode(mime_message),
-        threadId: thread_id || null,
-      },
-    }, callback);
-  }
-
-  function api_gmail_draft_delete(account_email, id, callback) {
-    api_gmail_call(account_email, 'DELETE', 'drafts/' + id, null, callback);
-  }
-
-  function api_gmail_draft_update(account_email, id, mime_message, callback) {
-    api_gmail_call(account_email, 'PUT', 'drafts/' + id, {
-      message: {
-        raw: tool.str.base64url_encode(mime_message),
-      },
-    }, callback);
-  }
-
-  function api_gmail_draft_get(account_email, id, format, callback) {
-    api_gmail_call(account_email, 'GET', 'drafts/' + id, {
-      format: format || 'full'
-    }, callback);
-  }
-
-  function api_gmail_draft_send(account_email, id, callback) {
-    api_gmail_call(account_email, 'POST', 'drafts/send', {
-      id: id,
-    }, callback);
-  }
-
-  function encode_as_multipart_related(parts) { // todo - this could probably be achieved with emailjs-mime-builder
-    var boundary = 'this_sucks_' + str_random(10);
-    var body = '';
-    tool.each(parts, function(type, data) {
-      body += '--' + boundary + '\n';
-      body += 'Content-Type: ' + type + '\n';
-      if(tool.value('json').in(type)) {
-        body += '\n' + data + '\n\n';
-      } else {
-        body += 'Content-Transfer-Encoding: base64\n';
-        body += '\n' + btoa(data) + '\n\n';
-      }
-    });
-    body += '--' + boundary + '--';
-    return { content_type: 'multipart/related; boundary=' + boundary, body: body };
-  }
-
-  function api_gmail_message_send(account_email, message, callback, progress_callback) {
-    message.headers.From = message.from;
-    message.headers.To = message.to.join(',');
-    message.headers.Subject = message.subject;
-    mime_encode(message.body, message.headers, message.attachments, function(mime_message) {
-      var request = encode_as_multipart_related({ 'application/json; charset=UTF-8': JSON.stringify({threadId: message.thread}), 'message/rfc822': mime_message });
-      api_gmail_call(account_email, 'POST', 'messages/send', request.body, callback, undefined, {upload: progress_callback || function () {}}, request.content_type);
-    });
-  }
-
-  function api_gmail_message_list(account_email, q, include_deleted, callback) {
-    api_gmail_call(account_email, 'GET', 'messages', {
-      q: q,
-      includeSpamTrash: include_deleted || false,
-    }, callback);
-  }
-
-  function api_gmail_message_get(account_email, message_id, format, callback, results) { //format: raw, full or metadata
-    if(typeof message_id === 'object') { // todo: chained requests are messy and slow. parallel processing with promises would be better
-      if(!results) {
-        results = {};
-      }
-      if(message_id.length) {
-        var id = message_id.pop();
-        api_gmail_call(account_email, 'GET', 'messages/' + id, { format: format || 'full' }, function (success, response) {
-          if(success) {
-            results[id] = response;
-            api_gmail_message_get(account_email, message_id, format, callback, results);
-          } else {
-            callback(success, response, results);
-          }
-        });
-      } else {
-        callback(true, results);
-      }
-    } else {
-      api_gmail_call(account_email, 'GET', 'messages/' + message_id, { format: format || 'full' }, callback);
-    }
-  }
-
-  function api_gmail_message_attachment_get(account_email, message_id, attachment_id, callback, progress_callback) {
-    api_gmail_call(account_email, 'GET', 'messages/' + message_id + '/attachments/' + attachment_id, {}, callback, undefined, {download: progress_callback});
-  }
-
-  function api_gmail_find_attachments(gmail_email_object, internal_results, internal_message_id) {
-    if(!internal_results) {
-      internal_results = [];
-    }
-    if(typeof gmail_email_object.payload !== 'undefined') {
-      internal_message_id = gmail_email_object.id;
-      api_gmail_find_attachments(gmail_email_object.payload, internal_results, internal_message_id);
-    }
-    if(typeof gmail_email_object.parts !== 'undefined') {
-      tool.each(gmail_email_object.parts, function (i, part) {
-        api_gmail_find_attachments(part, internal_results, internal_message_id);
-      });
-    }
-    if(typeof gmail_email_object.body !== 'undefined' && typeof gmail_email_object.body.attachmentId !== 'undefined') {
-      var attachment = {
-        message_id: internal_message_id,
-        id: gmail_email_object.body.attachmentId,
-        size: gmail_email_object.body.size,
-        name: gmail_email_object.filename,
-        type: gmail_email_object.mimeType,
-        inline: (api_gmail_find_header(gmail_email_object, 'content-disposition') || '').toLowerCase().indexOf('inline') === 0,
-      };
-      attachment.treat_as = file_treat_as(attachment);
-      internal_results.push(attachment);
-    }
-    return internal_results;
-  }
-
-  function file_treat_as(attachment) {
-    if(tool.value(attachment.name).in(['PGPexch.htm.pgp', 'PGPMIME version identification'])) {
-      return 'hidden';  // PGPexch.htm.pgp is html alternative of textual body content produced by PGP Desktop and GPG4o
-    } else if(attachment.name === 'signature.asc' || attachment.type === 'application/pgp-signature') {
-      return  'signature';
-    } else if(!attachment.name && !tool.value('image/').in(attachment.type)) { // attachment.name may be '' or undefined - catch either
-      return attachment.size < 100 ? 'hidden' : 'message';
-    } else if(tool.value(attachment.name).in(['message', 'message.asc', 'encrypted.asc', 'encrypted.eml.pgp'])) {
-      return 'message';
-    } else if(attachment.name.match(/(\.pgp$)|(\.gpg$)|(\.[a-zA-Z0-9]{3,4}\.asc$)/g)) { // ends with one of .gpg, .pgp, .???.asc, .????.asc
-      return 'encrypted';
-    } else if(attachment.name.match(/^(0|0x)?[A-F0-9]{8}([A-F0-9]{8})?\.asc$/g)) { // name starts with a key id
-      return 'public_key';
-    } else if(tool.value('public').in(attachment.name.toLowerCase()) && attachment.name.match(/[A-F0-9]{8}.*\.asc$/g)) { // name contains the word "public", any key id and ends with .asc
-      return 'public_key';
-    } else if(attachment.name.match(/\.asc$/) && attachment.size < 100000 && !attachment.inline) {
-      return 'message';
-    } else {
-      return 'standard';
-    }
-  }
-
-  function api_gmail_find_bodies(gmail_email_object, internal_results) {
-    if(!internal_results) {
-      internal_results = {};
-    }
-    if(typeof gmail_email_object.payload !== 'undefined') {
-      api_gmail_find_bodies(gmail_email_object.payload, internal_results);
-    }
-    if(typeof gmail_email_object.parts !== 'undefined') {
-      tool.each(gmail_email_object.parts, function (i, part) {
-        api_gmail_find_bodies(part, internal_results);
-      });
-    }
-    if(typeof gmail_email_object.body !== 'undefined' && typeof gmail_email_object.body.data !== 'undefined' && typeof gmail_email_object.body.size !== 0) {
-      internal_results[gmail_email_object.mimeType] = gmail_email_object.body.data;
-    }
-    return internal_results;
-  }
-
-  function api_gmail_fetch_attachments(account_email, attachments, callback, results) { //todo: parallelize with promises
-    if(!results) {
-      results = [];
-    }
-    var attachment = attachments[results.length];
-    api_gmail_message_attachment_get(account_email, attachment.message_id, attachment.id, function (success, response) {
-      if(success) {
-        attachment.data = response.data;
-        results.push(attachment);
-        if(results.length === attachments.length) {
-          callback(true, results);
-        } else {
-          api_gmail_fetch_attachments(account_email, attachments, callback, results);
-        }
-      } else {
-        callback(success, response);
-      }
-    });
-  }
-
-  function api_gmail_find_header(api_gmail_message_object, header_name) {
-    var node = api_gmail_message_object.payload ? api_gmail_message_object.payload : api_gmail_message_object;
-    if(typeof node.headers !== 'undefined') {
-      for(var i = 0; i < node.headers.length; i++) {
-        if(node.headers[i].name.toLowerCase() === header_name.toLowerCase()) {
-          return node.headers[i].value;
-        }
-      }
-    }
-    return null;
-  }
-
-  function api_gmail_search_contacts(account_email, user_query, known_contacts, callback) {
-    var gmail_query = ['is:sent', USELESS_CONTACTS_FILTER];
-    if(user_query) {
-      var variations_of_to = user_query.split(/[ \.]/g).filter(function(v) {!tool.value(v).in(['com', 'org', 'net']);});
-      if(!tool.value(user_query).in(variations_of_to)) {
-        variations_of_to.push(user_query);
-      }
-      gmail_query.push('(to:' + variations_of_to.join(' OR to:') + ')');
-    }
-    tool.each(known_contacts, function (i, contact) {
-      gmail_query.push('-to:"' + contact.email + '"');
-    });
-    api_gmail_loop_through_emails_to_compile_contacts(account_email, gmail_query.join(' '), callback);
-  }
-
-  function api_gmail_loop_through_emails_to_compile_contacts(account_email, query, callback, results) {
-    results = results || [];
-    api_gmail_fetch_messages_based_on_query_and_extract_first_available_header(account_email, query, ['to', 'date'], function (headers) {
-      if(headers && headers.to) {
-        var result = headers.to.split(/, ?/).map(tool.str.parse_email).map(function (r) {
-          r.date = headers.date;
-          return r;
-        });
-        var add_filter = result.map(function (email) {
-          return ' -to:"' + email.email + '"';
-        }).join('');
-        results = results.concat(result);
-        callback({ new: result, all: results, });
-        api_gmail_loop_through_emails_to_compile_contacts(account_email, query + add_filter, callback, results);
-      } else {
-        callback({ new: [], all: results, });
-      }
-    });
-  }
-
-  function api_gmail_fetch_messages_based_on_query_and_extract_first_available_header(account_email, q, header_names, callback) {
-    api_gmail_message_list(account_email, q, false, function (success, message_list_response) {
-      if(success && typeof message_list_response.messages !== 'undefined') {
-        api_gmail_fetch_messages_sequentially_from_list_and_extract_first_available_header(account_email, message_list_response.messages, header_names, callback);
-      } else {
-        callback(); // if the request is !success, it will just return undefined, which may not be the best
-      }
-    });
-  }
-
-  function api_gmail_fetch_key_backups(account_email, callback) {
-    tool.api.gmail.message_list(account_email, tool.api.gmail.query.backups(account_email), true, function (success, response) {
-      if(success) {
-        if(response.messages) {
-          var message_ids = response.messages.map(function(m) { return m.id});
-          tool.api.gmail.message_get(account_email, message_ids, 'full', function (success, messages) {
-            if(success) {
-              var attachments = [];
-              tool.each(messages, function (i, message) {
-                attachments = attachments.concat(tool.api.gmail.find_attachments(message));
-              });
-              tool.api.gmail.fetch_attachments(account_email, attachments, function (success, downloaded_attachments) {
-                var keys = [];
-                tool.each(downloaded_attachments, function (i, downloaded_attachment) {
-                  try {
-                    var armored_key = tool.str.base64url_decode(downloaded_attachment.data);
-                    var key = openpgp.key.readArmored(armored_key).keys[0];
-                    if(key.isPrivate()) {
-                      keys.push(key);
-                    }
-                  } catch(err) {}
-                });
-                callback(success, keys);
-              });
-            } else {
-              callback(false, 'Connection dropped while checking for backups. Please try again.');
-            }
-          });
-        } else {
-          callback(true, null);
-        }
-      } else {
-        callback(false, 'Connection dropped while checking for backups. Please try again.');
-      }
-    });
-  }
-
-  function api_gmail_fetch_messages_sequentially_from_list_and_extract_first_available_header(account_email, messages, header_names, callback, i) {
-    // this won a prize for the most precisely named function in the hostory of javascriptkind
-    i = i || 0;
-    api_gmail_message_get(account_email, messages[i].id, 'metadata', function (success, message_get_response) {
-      var header_values = {};
-      var missing_header = false;
-      if(success) { // non-mission critical - just skip failed requests
-        tool.each(header_names, function (i, header_name) {
-          header_values[header_name] = api_gmail_find_header(message_get_response, header_name);
-          if(!header_values[header_name]) {
-            missing_header = true;
-          }
-        });
-      }
-      if(!missing_header) {
-        callback(header_values);
-      } else if(i + 1 < messages.length) {
-        api_gmail_fetch_messages_sequentially_from_list_and_extract_first_available_header(account_email, messages, header_names, callback, i + 1);
-      } else {
-        callback();
-      }
-    });
-  }
-
-  /*
-   * Extracts the encrypted message from gmail api. Sometimes it's sent as a text, sometimes html, sometimes attachments in various forms.
-   * success_callback(str armored_pgp_message)
-   * error_callback(str error_type, str html_formatted_data_to_display_to_user)
-   *    ---> html_formatted_data_to_display_to_user might be unknown type of mime message, or pgp message with broken format, etc.
-   *    ---> The motivation is that user might have other tool to process this. Also helps debugging issues in the field.
-   */
-  function gmail_api_extract_armored_block(account_email, message_id, format, success_callback, error_callback) {
-    api_gmail_message_get(account_email, message_id, format, function (get_message_success, gmail_message_object) {
-      if(get_message_success) {
-        if(format === 'full') {
-          var bodies = api_gmail_find_bodies(gmail_message_object);
-          var attachments = api_gmail_find_attachments(gmail_message_object);
-          var armored_message_from_bodies = tool.crypto.armor.clip(tool.str.base64url_decode(bodies['text/plain'])) || tool.crypto.armor.clip(tool.crypto.armor.strip(tool.str.base64url_decode(bodies['text/html'])));
-          if(armored_message_from_bodies) {
-            success_callback(armored_message_from_bodies);
-          } else if(attachments.length) {
-            var found = false;
-            tool.each(attachments, function (i, attachment_meta) {
-              if(attachment_meta.treat_as === 'message') {
-                found = true;
-                api_gmail_fetch_attachments(account_email, [attachment_meta], function (fetch_attachments_success, attachment) {
-                  if(fetch_attachments_success) {
-                    var armored_message_text = tool.str.base64url_decode(attachment[0].data);
-                    var armored_message = tool.crypto.armor.clip(armored_message_text);
-                    if(armored_message) {
-                      success_callback(armored_message);
-                    } else {
-                      error_callback('format', armored_message_text);
-                    }
-                  } else {
-                    error_callback('connection');
-                  }
-                });
-                return false;
-              }
-            });
-            if(!found) {
-              error_callback('format', tool.str.pretty_print(gmail_message_object.payload));
-            }
-          } else {
-            error_callback('format', tool.str.pretty_print(gmail_message_object.payload));
-          }
-        } else { // format === raw
-          tool.mime.decode(tool.str.base64url_decode(gmail_message_object.raw), function (success, mime_message) {
-            if(success) {
-              var armored_message = tool.crypto.armor.clip(mime_message.text); // todo - the message might be in attachments
-              if(armored_message) {
-                success_callback(armored_message);
-              } else {
-                error_callback('format');
-              }
-            } else {
-              error_callback('format');
-            }
-          });
-        }
-      } else {
-        error_callback('connection');
-      }
-    });
-  }
-
-  /* tool.api.gmail.query */
-
-  function api_gmail_query_or(arr, quoted) {
-    if(quoted) {
-      return '("' + arr.join('") OR ("') + '")';
-    } else {
-      return '(' + arr.join(') OR (') + ')';
-    }
-  }
-
-  function api_gmail_query_backups(account_email) {
-    return [
-      'from:' + account_email,
-      'to:' + account_email,
-      '(subject:"' + tool.enums.recovery_email_subjects.join('" OR subject: "') + '")',
-      '-is:spam',
-    ].join(' ');
-  }
-
-  /* tool.api.attester */
-
-  function api_attester_call(path, values) {
-    return api_call('https://attester.flowcrypt.com/', path, values, 'JSON', null, {'api-version': 3});
-    // return api_call('http://127.0.0.1:5002/', path, values, 'JSON', null, {'api-version': 3});
-  }
-
-  function api_attester_lookup_email(email) {
-    return api_attester_call('lookup/email', {
-      email: (typeof email === 'string') ? tool.str.parse_email(email).email : email.map(function(a) {return tool.str.parse_email(a).email; }),
-    });
-  }
-
-  function api_attester_initial_legacy_submit(email, pubkey, attest) {
-    return api_attester_call('initial/legacy_submit', {
-      email: tool.str.parse_email(email).email,
-      pubkey: pubkey.trim(),
-      attest: attest || false,
-    });
-  }
-
-  function api_attester_initial_confirm(signed_attest_packet) {
-    return api_attester_call('initial/confirm', {
-      signed_message: signed_attest_packet,
-    });
-  }
-
-  function api_attester_replace_request(email, signed_attest_packet, new_pubkey) {
-    return api_attester_call('replace/request', {
-      signed_message: signed_attest_packet,
-      new_pubkey: new_pubkey,
-      email: email,
-    });
-  }
-
-  function api_attester_replace_confirm(signed_attest_packet) {
-    return api_attester_call('replace/confirm', {
-      signed_message: signed_attest_packet,
-    });
-  }
-
-  function api_attester_test_welcome(email, pubkey) {
-    return api_attester_call('test/welcome', {
-      email: email,
-      pubkey: pubkey,
-    });
-  }
-
-  function api_attester_packet_armor(content_text) {
-    return crypto_armor_headers('attest_packet').begin + '\n' + content_text + '\n' + crypto_armor_headers('attest_packet').end;
-  }
-
-  function api_attester_packet_create_sign(values, decrypted_prv) {
-    return catcher.Promise(function (resolve, reject) {
-      var lines = [];
-      tool.each(values, function (key, value) {
-        lines.push(key + ':' + value);
-      });
-      var content_text = lines.join('\n');
-      var packet = api_attester_packet_parse(api_attester_packet_armor(content_text));
-      if(packet.success !== true) {
-        reject({code: null, message: packet.error, internal: 'parse'});
-      } else {
-        crypto_message_sign(decrypted_prv, content_text, true, function (success, signed_attest_packet) {
-          resolve(signed_attest_packet);
-        });
-      }
-    });
-  }
-
-  function api_attester_packet_parse(text) {
-    var accepted_values = {
-      'ACT': 'action',
-      'ATT': 'attester',
-      'ADD': 'email_hash',
-      'PUB': 'fingerprint',
-      'OLD': 'fingerprint_old',
-      'RAN': 'random',
-    };
-    var result = {
-      success: false,
-      content: {},
-      error: null,
-      text: null,
-    };
-    var packet_headers = crypto_armor_headers('attest_packet', 're');
-    var matches = text.match(RegExp(packet_headers.begin + '([^]+)' + packet_headers.end, 'm'));
-    if(matches && matches[1]) {
-      result.text = matches[1].replace(/^\s+|\s+$/g, '');
-      var lines = result.text.split('\n');
-      tool.each(lines, function (i, line) {
-        var line_parts = line.replace('\n', '').replace(/^\s+|\s+$/g, '').split(':');
-        if(line_parts.length !== 2) {
-          result.error = 'Wrong content line format';
-          return false;
-        }
-        if(!accepted_values[line_parts[0]]) {
-          result.error = 'Unknown line key';
-          return false;
-        }
-        if(result.content[accepted_values[line_parts[0]]]) {
-          result.error = 'Duplicate line key';
-          return false;
-        }
-        result.content[accepted_values[line_parts[0]]] = line_parts[1];
-      });
-      if(result.error !== null) {
-        result.content = {};
-        return result;
-      } else {
-        if(result.content.fingerprint && result.content.fingerprint.length !== 40) { //todo - we should use regex here, everywhere
-          result.error = 'Wrong PUB line value format';
-          result.content = {};
-          return result;
-        }
-        if(result.content.email_hash && result.content.email_hash.length !== 40) {
-          result.error = 'Wrong ADD line value format';
-          result.content = {};
-          return result;
-        }
-        if(result.content.str_random && result.content.str_random.length !== 40) {
-          result.error = 'Wrong RAN line value format';
-          result.content = {};
-          return result;
-        }
-        if(result.content.fingerprint_old && result.content.fingerprint_old.length !== 40) {
-          result.error = 'Wrong OLD line value format';
-          result.content = {};
-          return result;
-        }
-        if(result.content.action && !tool.value(result.content.action).in(['INITIAL', 'REQUEST_REPLACEMENT', 'CONFIRM_REPLACEMENT'])) {
-          result.error = 'Wrong ACT line value format';
-          result.content = {};
-          return result;
-        }
-        if(result.content.attester && !tool.value(result.content.attester).in(['CRYPTUP'])) {
-          result.error = 'Wrong ATT line value format';
-          result.content = {};
-          return result;
-        }
-        result.success = true;
-        return result;
-      }
-    } else {
-      result.error = 'Could not locate packet headers';
-      result.content = {};
-      return result;
-    }
-  }
-
-  /* tool.api.cryptup */
-
-  function api_cryptup_call(path, values, format) {
-    return api_call(api_cryptup_url('api'), path, values, format || 'JSON', null, {'api-version': 3});
-    // return api_call('http://127.0.0.1:5001/', path, values, format || 'JSON', null, {'api-version': 3});
-  }
-
-  function api_cryptup_url(type, variable) {
-    return {
-      'api': 'https://api.cryptup.io/',
-      'me': 'https://flowcrypt.com/me/' + variable,
-      'pubkey': 'https://flowcrypt.com/pub/' + variable,
-      'decrypt': 'https://flowcrypt.com/' + variable,
-      'web': 'https://flowcrypt.com/',
-    }[type];
-  }
-
-  var api_cryptup_auth_error = {code: 401, message: 'Could not log in', internal: 'auth'};
-
-  function api_cryptup_help_feedback(account_email, message) {
-    return api_cryptup_call('help/feedback', {
-      email: account_email,
-      message: message,
-    });
-  }
-
-  function api_cryptup_help_uninstall(email, client, metrics) {
-    return api_cryptup_call('help/uninstall', {
-      email: email,
-      client: client,
-      metrics: metrics,
-    });
-  }
-
-  function api_cryptup_account_check(emails) {
-    return api_cryptup_call('account/check', {
-      emails: emails,
-    });
-  }
-
-  function api_cryptup_account_login(account_email, token) {
-    return catcher.Promise(function(resolve, reject) {
-      storage.auth_info(function (registered_email, registered_uuid, already_verified) {
-        var uuid = registered_uuid || tool.crypto.hash.sha1(tool.str.random(40));
-        var email = registered_email || account_email;
-        api_cryptup_call('account/login', {
-          account: email,
-          uuid: uuid, token: token || null,
-        }).validate(function (r) {return r.registered === true;}).then(function (response) {
-          var to_save = {cryptup_account_email: email, cryptup_account_uuid: uuid, cryptup_account_verified: response.verified === true, cryptup_account_subscription: response.subscription};
-          storage.set(null, to_save, function () {
-            resolve({verified: response.verified === true, subscription: response.subscription});
-          });
-        }, reject);
-      });
-    });
-  }
-
-  function api_cryptup_account_subscribe(product, method, payment_source_token) {
-    return catcher.Promise(function(resolve, reject) {
-      storage.auth_info(function (email, uuid, verified) {
-        if(verified) {
-          api_cryptup_call('account/subscribe', {
-            account: email,
-            uuid: uuid,
-            method: method,
-            source: payment_source_token,
-            product: product,
-          }).then(function(response) {
-            storage.set(null, { cryptup_account_subscription: response.subscription }, function () {
-              resolve(response);
-            });
-          }, reject);
-        } else {
-          reject(api_cryptup_auth_error);
-        }
-      });
-    });
-  }
-
-  function api_cryptup_account_update(update_values) {
-    return catcher.Promise(function(resolve, reject) {
-      storage.auth_info(function (email, uuid, verified) {
-        if(verified) {
-          var request = {account: email, uuid: uuid};
-          tool.each(update_values || {}, function(k, v) { request[k] = v; });
-          api_cryptup_call('account/update', request).validate(function(r) {return typeof r.result === 'object' }).then(resolve, reject);
-        } else {
-          reject(api_cryptup_auth_error);
-        }
-      });
-    });
-  }
-
-  function api_cryptup_message_presign_files(attachments, auth_method) {
-    return catcher.Promise(function (resolve, reject) {
-      var lengths = attachments.map(function (a) { return a.size; });
-      if(!auth_method) {
-        api_cryptup_call('message/presign_files', {
-          lengths: lengths,
-        }).then(resolve, reject);
-      } else if(auth_method === 'uuid') {
-        storage.auth_info(function (email, uuid, verified) {
-          if(verified) {
-            api_cryptup_call('message/presign_files', {
-              account: email,
-              uuid: uuid,
-              lengths: lengths,
-            }).then(resolve, reject);
-          } else {
-            reject(api_cryptup_auth_error);
-          }
-        });
-      } else {
-        api_cryptup_call('message/presign_files', {
-          message_token_account: auth_method.account,
-          message_token: auth_method.token,
-          lengths: attachments.map(function(a) { return a.size; }),
-        }).then(resolve, reject);
-      }
-    });
-  }
-
-  function api_cryptup_message_confirm_files(identifiers) {
-    return api_cryptup_call('message/confirm_files', {
-      identifiers: identifiers,
-    });
-  }
-
-  function api_cryptup_message_upload(encrypted_data_armored, auth_method) { // todo - DEPRECATE THIS. Send as JSON to message/store
-    return catcher.Promise(function (resolve, reject) {
-      if(encrypted_data_armored.length > 100000) {
-        reject({code: null, message: 'Message text should not be more than 100 KB. You can send very long texts as attachments.'});
-      } else {
-        var content = file_attachment('cryptup_encrypted_message.asc', 'text/plain', encrypted_data_armored);
-        if(!auth_method) {
-          api_cryptup_call('message/upload', {
-            content: content,
-          }, 'FORM').then(resolve, reject);
-        } else {
-          storage.auth_info(function (email, uuid, verified) {
-            if(verified) {
-              api_cryptup_call('message/upload', {
-                account: email,
-                uuid: uuid,
-                content: content,
-              }, 'FORM').then(resolve, reject);
-            } else {
-              reject(api_cryptup_auth_error);
-            }
-          });
-        }
-      }
-    });
-  }
-
-  function api_cryptup_message_expiration(admin_codes, add_days) {
-    return catcher.Promise(function (resolve, reject) {
-      storage.auth_info(function (email, uuid, verified) {
-        if(verified) {
-          api_cryptup_call('message/expiration', {
-            account: email,
-            uuid: uuid,
-            admin_codes: admin_codes,
-            add_days: add_days || null,
-          }).then(resolve, reject);
-        } else {
-          reject(api_cryptup_auth_error);
-        }
-      });
-    });
-  }
-
-  function api_cryptup_message_token() {
-    return catcher.Promise(function (resolve, reject) {
-      storage.auth_info(function (email, uuid, verified) {
-        if(verified) {
-          api_cryptup_call('message/token', {
-            account: email,
-            uuid: uuid,
-          }).then(resolve, reject);
-        } else {
-          reject(api_cryptup_auth_error);
-        }
-      });
-    });
-  }
-
-  function api_cryptup_message_reply(short, token, from, to, subject, message) {
-    return api_cryptup_call('message/reply', {
-      short: short,
-      token: token,
-      from: from,
-      to: to,
-      subject: subject,
-      message: message,
-    });
-  }
-
-  function api_cryptup_message_contact(sender, message, message_token) {
-    return api_cryptup_call('message/contact', {
-      message_token_account: message_token.account,
-      message_token: message_token.token,
-      sender: sender,
-      message: message,
-    });
-  }
-
-  function api_cryptup_link_message(short) {
-    return api_cryptup_call('link/message', {
-      short: short,
-    });
-  }
-
-  function api_cryptup_link_me(alias) {
-    return api_cryptup_call('link/me', {
-      alias: alias,
-    });
-  }
-
-  function api_cryptup_account_check_sync(callback) { // callbacks true on updated, false not updated, null for could not fetch
-    callback = typeof callback === 'function' ? callback : function() {};
-    storage.account_emails_get(function(emails) {
-      if(emails.length) {
-        tool.api.cryptup.account_check(emails).then(function(response) {
-          storage.auth_info(function (cryptup_account_email, cryptup_account_uuid, cryptup_account_verified) {
-            storage.subscription(function(stored_level, stored_expire, stored_active, stored_method) {
-              var local_storage_update = {};
-              if(response.email) {
-                if((response.email && !cryptup_account_email) || (response.email && cryptup_account_email !== response.email)) {
-                  // this will of course fail auth on the server when used. The user will be prompted to verify this new device when that happens.
-                  local_storage_update['cryptup_account_email'] = response.email;
-                  local_storage_update['cryptup_account_uuid'] = tool.crypto.hash.sha1(tool.str.random(40));
-                  local_storage_update['cryptup_account_verified'] = true;
-                }
-              } else {
-                if(cryptup_account_email) {
-                  local_storage_update['cryptup_account_email'] = null;
-                  local_storage_update['cryptup_account_uuid'] = null;
-                  local_storage_update['cryptup_account_verified'] = false;
-                }
-              }
-              if(response.subscription) {
-                var rs = response.subscription;
-                if(rs.level !== stored_level || rs.method !== stored_method || rs.expire !== stored_expire || stored_active !== !rs.expired) {
-                  local_storage_update['cryptup_account_subscription'] = response.subscription;
-                }
-              } else {
-                if(stored_level || stored_expire || stored_active || stored_method) {
-                  local_storage_update['cryptup_account_subscription'] = null;
-                }
-              }
-              if(Object.keys(local_storage_update).length) {
-                catcher.log('updating account subscription from ' + stored_level + ' to ' + (response.subscription ? response.subscription.level : null), response);
-                storage.set(null, local_storage_update, function() {
-                  callback(true);
-                });
-              } else {
-                callback(false);
-              }
-            });
-          });
-        }, function(error) {
-          catcher.log('could not check account subscription', error);
-          callback(null);
-        });
-      } else {
-        callback(null);
-      }
-    });
-  }
-
-  /* tool.api.aws */
-
-  function api_aws_s3_upload(items, progress_callback) {
-    if (!items.length) {
-      callback(false);
-      return;
-    }
-    var progress = arr_zeroes(items.length);
-    var promises = [];
-    tool.each(items, function (i, item) {
-      var values = item.fields;
-      values.file = file_attachment('encrpted_attachment', 'application/octet-stream', item.attachment.content);
-      promises.push(api_call(item.base_url, '', values, 'FORM', {upload: function(single_file_progress) {
-        progress[i] = single_file_progress;
-        ui_event_prevent(ui_event_spree(), function() {
-          progress_callback(arr_average(progress)); // this should of course be weighted average. How many years until someone notices?
-        })();
-      }}));
-    });
-    return Promise.all(promises);
-  }
 
 })();
 
@@ -3999,3 +2716,7 @@
   }
 
 })();
+
+if(window.flowcrypt_profile) {
+  window.flowcrypt_profile.add('common');
+}

@@ -6,7 +6,16 @@ tool.ui.event.protect();
 
 let url_params = tool.env.url_params(['account_email', 'frame_id', 'message', 'parent_tab_id', 'message_id', 'is_outgoing', 'sender_email', 'has_password', 'signature', 'short']);
 
-window.flowcrypt_storage.db_open(function (db) {
+
+if(window.flowcrypt_profile) {
+  window.flowcrypt_profile.add('pgp_block.js before db open');
+}
+
+// window.flowcrypt_storage.db_open(function (db) {
+
+  if(window.flowcrypt_profile) {
+    window.flowcrypt_profile.add('pgp_block.js after db open');
+  }
 
   let included_attachments = [];
   let height_history = [];
@@ -18,17 +27,21 @@ window.flowcrypt_storage.db_open(function (db) {
   let password_message_link_result;
   let admin_codes;
 
-  if(db === window.flowcrypt_storage.db_denied) {
-    window.flowcrypt_storage.notify_error(url_params.account_email, url_params.parent_tab_id);
-    render_error(window.lang.pgp_block.update_chrome_settings + '<a href="#" class="review_settings">Review Settings</a>', null, function () {
-      $('.review_settings').click(function () {
-        tool.browser.message.send(null, 'settings', { account_email: url_params.account_email, page: '/chrome/texts/chrome_content_settings.htm' });
-      });
-    });
-    return;
-  }
+  // if(db === window.flowcrypt_storage.db_denied) {
+  //   window.flowcrypt_storage.notify_error(url_params.account_email, url_params.parent_tab_id);
+  //   render_error(window.lang.pgp_block.update_chrome_settings + '<a href="#" class="review_settings">Review Settings</a>', null, function () {
+  //     $('.review_settings').click(function () {
+  //       tool.browser.message.send(null, 'settings', { account_email: url_params.account_email, page: '/chrome/texts/chrome_content_settings.htm' });
+  //     });
+  //   });
+  //   return;
+  // }
 
   tool.env.increment('view');
+
+  // let S = tool.ui.build_jquery_selectors({
+  //   pgp_block: '#pgp_block',
+  // });
 
   function send_resize_message() {
     let new_height = $('#pgp_block').height() + 40;
@@ -46,14 +59,15 @@ window.flowcrypt_storage.db_open(function (db) {
     }
 
     if(!is_infinite_resize_loop()) {
-      tool.browser.message.send(url_params.parent_tab_id, 'set_css', {
-        selector: 'iframe#' + url_params.frame_id,
-        css: { height: new_height },
-      });
+      // tool.browser.message.send(url_params.parent_tab_id, 'set_css', {
+      //   selector: 'iframe#' + url_params.frame_id,
+      //   css: { height: new_height },
+      // });
     }
   }
 
   function render_content(content, is_error, callback) {
+    window.flowcrypt_profile.add('pgp_block.js rendering');
     window.flowcrypt_storage.get(url_params.account_email, ['successfully_received_at_leat_one_message'], storage => {
       if(!is_error && !url_params.is_outgoing) { //successfully opened incoming message
         window.flowcrypt_storage.set(url_params.account_email, { successfully_received_at_leat_one_message: true });
@@ -74,6 +88,8 @@ window.flowcrypt_storage.db_open(function (db) {
         if(callback) {
           callback();
         }
+        window.flowcrypt_profile.add('pgp_block.js rendered');
+        window.flowcrypt_profile.print();
         setTimeout(function () {
           $(window).resize(tool.ui.event.prevent(tool.ui.event.spree(), send_resize_message));
         }, 1000);
@@ -143,7 +159,7 @@ window.flowcrypt_storage.db_open(function (db) {
     //todo - more or less copy/pasted from attachment.js, should use a common function
     //todo - or even better, stop showing attachments as inner part of messages, instead show them through attachment.htm. Test performance.
     if(success) {
-      tool.crypto.message.decrypt(db, url_params.account_email, encrypted_data, undefined, function (result) {
+      tool.crypto.message.decrypt(null, url_params.account_email, encrypted_data, undefined, function (result) {
         if(result.success) {
           tool.file.save_to_downloads(name.replace(/(\.pgp)|(\.gpg)$/, ''), type, result.content.data);
         } else {
@@ -321,8 +337,11 @@ window.flowcrypt_storage.db_open(function (db) {
   }
 
   function decrypt_and_render(optional_password) {
+    window.flowcrypt_profile.add('pgp_block.js decrypt and render start');
     if(typeof url_params.signature !== 'string') {
-      tool.crypto.message.decrypt(db, url_params.account_email, url_params.message, optional_password, function (result) {
+      tool.browser.message.send(null, 'bg_exec', {path: 'tool.crypto.message.decrypt', args: [null, url_params.account_email, url_params.message, optional_password, tool.env.callback_placeholder]}, function (result) {
+        window.flowcrypt_profile.add('pgp_block.js decrypted');
+      // tool.crypto.message.decrypt(db, url_params.account_email, url_params.message, optional_password, function (result) {
         if(result.success) {
           if(result.success && result.signature && result.signature.contact && !result.signature.match && can_read_emails && message_fetched_from_api !== 'raw') {
             console.log('re-fetching message ' + url_params.message_id + ' from api because failed signature check: ' + ((!message_fetched_from_api) ? 'full' : 'raw'));
@@ -366,7 +385,7 @@ window.flowcrypt_storage.db_open(function (db) {
         }
       });
     } else {
-      tool.crypto.message.verify_detached(db, url_params.account_email, url_params.message, url_params.signature, function (signature_result) {
+      tool.crypto.message.verify_detached(null, url_params.account_email, url_params.message, url_params.signature, function (signature_result) {
         decide_decrypted_content_formatting_and_render(url_params.message, false, signature_result);
       });
     }
@@ -444,6 +463,9 @@ window.flowcrypt_storage.db_open(function (db) {
   }
 
   function initialize(force_pull_message_from_api) {
+    if(window.flowcrypt_profile) {
+      window.flowcrypt_profile.add('pgp_block.js initialize');
+    }
     if(can_read_emails && url_params.message && url_params.signature === true) {
       $('#pgp_block').text('Loading signature...');
       tool.api.gmail.message_get(url_params.account_email, url_params.message_id, 'raw', function(success, result) {
@@ -522,12 +544,23 @@ window.flowcrypt_storage.db_open(function (db) {
     }
   }
 
-  window.flowcrypt_storage.get(url_params.account_email, ['setup_done', 'google_token_scopes'], storage => {
-    can_read_emails = tool.api.gmail.has_scope(storage.google_token_scopes, 'read');
-    if(storage.setup_done) {
-      initialize();
-    } else {
-      render_error(window.lang.pgp_block.refresh_window, url_params.message || '');
+  if(window.flowcrypt_profile) {
+    window.flowcrypt_profile.add('pgp_block.js storage before');
+  }
+
+  // window.flowcrypt_storage.get(url_params.account_email, ['setup_done', 'google_token_scopes'], storage => {
+    can_read_emails = true;
+    if(window.flowcrypt_profile) {
+      window.flowcrypt_profile.add('pgp_block.js storage after');
     }
-  });
-});
+    // if(storage.setup_done) {
+      initialize();
+    // } else {
+    //   render_error(window.lang.pgp_block.refresh_window, url_params.message || '');
+    // }
+  // });
+// });
+
+if(window.flowcrypt_profile) {
+  window.flowcrypt_profile.add('pgp_block.js');
+}

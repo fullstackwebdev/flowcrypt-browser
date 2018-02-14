@@ -2084,3 +2084,7 @@
   }
 
 })();
+
+if(window.flowcrypt_profile) {
+  window.flowcrypt_profile.add('mnemonic');
+}

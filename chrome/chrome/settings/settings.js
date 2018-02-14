@@ -224,3 +224,6 @@ function initialize_private_key_import_ui() {
     }
   });
 }
+
+
+window.flowcrypt_profile.add('settings');

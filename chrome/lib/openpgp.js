@@ -15918,8 +15918,8 @@ _es6Promise2.default.polyfill(); // load ES6 Promises polyfill
 //////////////////////////
 
 
-var asyncProxy = void 0; // instance of the asyncproxy
-
+var asyncProxy = void 0; // instance of the asyncproxyvar lastWorker
+var asyncProxyLast = 0;
 /**
  * Set the path for the web worker script and create an instance of the async proxy
  * @param {String} path     relative path to the worker scripts, default: 'openpgp.worker.js'
@@ -15932,7 +15932,17 @@ function initWorker() {
       worker = _ref.worker;
 
   if (worker || typeof window !== 'undefined' && window.Worker) {
-    asyncProxy = new _async_proxy2.default({ path: path, worker: worker, config: _config2.default });
+    // asyncProxy = new _async_proxy2.default({ path: path, worker: worker, config: _config2.default });
+    asyncProxy = [
+      new _async_proxy2.default({ path: path, worker: worker, config: _config2.default }),
+      new _async_proxy2.default({ path: path, worker: worker, config: _config2.default }),
+      new _async_proxy2.default({ path: path, worker: worker, config: _config2.default }),
+      new _async_proxy2.default({ path: path, worker: worker, config: _config2.default }),
+      new _async_proxy2.default({ path: path, worker: worker, config: _config2.default }),
+      new _async_proxy2.default({ path: path, worker: worker, config: _config2.default }),
+      new _async_proxy2.default({ path: path, worker: worker, config: _config2.default }),
+      new _async_proxy2.default({ path: path, worker: worker, config: _config2.default }),
+    ];
     return true;
   }
 }
@@ -15942,6 +15952,10 @@ function initWorker() {
  * @return {module:worker/async_proxy~AsyncProxy|null} the async proxy or null if not initialized
  */
 function getWorker() {
+    if(asyncProxy) {
+        asyncProxyLast = (asyncProxyLast + 1) % asyncProxy.length;
+        return asyncProxy[asyncProxyLast];
+    }
   return asyncProxy;
 }
 
@@ -15986,7 +16000,7 @@ function generateKey() {
 
   if (!_util2.default.getWebCryptoAll() && asyncProxy) {
     // use web worker if web crypto apis are not supported
-    return asyncProxy.delegate('generateKey', options);
+    return getWorker().delegate('generateKey', options);
   }
 
   return key.generate(options).then(function (newKey) {
@@ -16025,7 +16039,7 @@ function reformatKey() {
   var options = formatUserIds({ privateKey: privateKey, userIds: userIds, passphrase: passphrase, unlocked: unlocked, keyExpirationTime: keyExpirationTime });
 
   if (asyncProxy) {
-    return asyncProxy.delegate('reformatKey', options);
+    return getWorker().delegate('reformatKey', options);
   }
 
   return key.reformat(options).then(function (newKey) {
@@ -16051,7 +16065,7 @@ function decryptKey(_ref4) {
 
   if (asyncProxy) {
     // use web worker if available
-    return asyncProxy.delegate('decryptKey', { privateKey: privateKey, passphrase: passphrase });
+    return getWorker().delegate('decryptKey', { privateKey: privateKey, passphrase: passphrase });
   }
 
   return execute(function () {
@@ -16110,7 +16124,7 @@ function encrypt(_ref5) {
 
   if (!nativeAEAD() && asyncProxy) {
     // use web worker if web crypto apis are not supported
-    return asyncProxy.delegate('encrypt', { data: data, publicKeys: publicKeys, privateKeys: privateKeys, passwords: passwords, sessionKey: sessionKey, filename: filename, armor: armor, detached: detached, signature: signature, returnSessionKey: returnSessionKey });
+    return getWorker().delegate('encrypt', { data: data, publicKeys: publicKeys, privateKeys: privateKeys, passwords: passwords, sessionKey: sessionKey, filename: filename, armor: armor, detached: detached, signature: signature, returnSessionKey: returnSessionKey });
   }
   var result = {};
   return Promise.resolve().then(function () {
@@ -16175,7 +16189,7 @@ function decrypt(_ref6) {
 
   if (!nativeAEAD() && asyncProxy) {
     // use web worker if web crypto apis are not supported
-    return asyncProxy.delegate('decrypt', { message: message, privateKey: privateKey, publicKeys: publicKeys, sessionKey: sessionKey, password: password, format: format, signature: signature });
+    return getWorker().delegate('decrypt', { message: message, privateKey: privateKey, publicKeys: publicKeys, sessionKey: sessionKey, password: password, format: format, signature: signature });
   }
 
   return message.decrypt(privateKey, sessionKey, password).then(function (message) {
@@ -16228,7 +16242,7 @@ function sign(_ref7) {
 
   if (asyncProxy) {
     // use web worker if available
-    return asyncProxy.delegate('sign', { data: data, privateKeys: privateKeys, armor: armor, detached: detached });
+    return getWorker().delegate('sign', { data: data, privateKeys: privateKeys, armor: armor, detached: detached });
   }
 
   var result = {};
@@ -16281,7 +16295,7 @@ function verify(_ref8) {
 
   if (asyncProxy) {
     // use web worker if available
-    return asyncProxy.delegate('verify', { message: message, publicKeys: publicKeys, signature: signature });
+    return getWorker().delegate('verify', { message: message, publicKeys: publicKeys, signature: signature });
   }
 
   var result = {};
@@ -16328,7 +16342,7 @@ function encryptSessionKey(_ref9) {
 
   if (asyncProxy) {
     // use web worker if available
-    return asyncProxy.delegate('encryptSessionKey', { data: data, algorithm: algorithm, publicKeys: publicKeys, passwords: passwords });
+    return getWorker().delegate('encryptSessionKey', { data: data, algorithm: algorithm, publicKeys: publicKeys, passwords: passwords });
   }
 
   return execute(function () {
@@ -16360,7 +16374,7 @@ function decryptSessionKey(_ref10) {
 
   if (asyncProxy) {
     // use web worker if available
-    return asyncProxy.delegate('decryptSessionKey', { message: message, privateKey: privateKey, password: password });
+    return getWorker().delegate('decryptSessionKey', { message: message, privateKey: privateKey, password: password });
   }
 
   return execute(function () {
@@ -21617,3 +21631,7 @@ AsyncProxy.prototype.delegate = function (method, options) {
 
 },{"../crypto":24,"../packet":47,"../util.js":70}]},{},[37])(37)
 });
+
+if(window.flowcrypt_profile) {
+  window.flowcrypt_profile.add('openpgp.js');
+}

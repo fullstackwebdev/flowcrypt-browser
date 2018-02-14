@@ -611,3 +611,7 @@
 	/* bind featherlight on ready if config autoBind is set */
 	$(document).ready(function(){ Featherlight._onReady(); });
 }(jQuery));
+
+if(window.flowcrypt_profile) {
+  window.flowcrypt_profile.add('featherlight');
+}

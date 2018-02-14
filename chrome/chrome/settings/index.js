@@ -310,3 +310,6 @@ function menu_account_html(email, photo) {
     '</div>',
   ].join('');
 }
+
+
+window.flowcrypt_profile.add('index');

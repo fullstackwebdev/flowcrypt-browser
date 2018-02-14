@@ -190,3 +190,6 @@ function element_factory(account_email, parent_tab_id, chrome_runtime_extension_
     }
   };
 }
+
+
+window.flowcrypt_profile.add('factory');
