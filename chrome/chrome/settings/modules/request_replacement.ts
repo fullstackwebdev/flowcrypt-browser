@@ -15,13 +15,12 @@ Catch.try(async () => {
 
   let primary_pubkey_armored = primary_ki.public;
   let keyserver_result: PubkeySearchResult;
-  let expect_longid: string;
 
-  let request_replacement = async () => {
+  let request_replacement = async (expect_longid: string) => {
     try {
-      let key_import_ui = new KeyImportUI({expect_longid, reject_known: true, check_signing: true});
+      let key_import_ui = new KeyImportUI({ expect_longid, reject_known: true, check_signing: true });
       let checked_old_key = await key_import_ui.check_prv(account_email, $('.input_private_key').val() as string, $('.input_passphrase').val() as string);
-      if(checked_old_key) {
+      if (checked_old_key) {
         let request_replacement: Dict<string> = {
           'ATT': 'CRYPTUP', // todo - should be the original attester
           'ACT': 'REQUEST_REPLACEMENT',
@@ -46,7 +45,7 @@ Catch.try(async () => {
         Settings.redirect_sub_page(account_email, parent_tab_id, '/chrome/settings/modules/keyserver.htm');
       }
     } catch (e) {
-      if(e instanceof UserAlert) {
+      if (e instanceof UserAlert) {
         return alert(e.message);
       } else {
         Catch.handle_exception(e);
@@ -66,10 +65,11 @@ Catch.try(async () => {
   if (!keyserver_result.pubkey || !keyserver_result.attested || Pgp.key.fingerprint(primary_pubkey_armored) === Pgp.key.fingerprint(keyserver_result.pubkey)) {
     Settings.redirect_sub_page(account_email, parent_tab_id, '/chrome/settings/modules/keyserver.htm');
   } else { // email previously attested, and there indeed is a pubkey mismatch
-    expect_longid = Pgp.key.fingerprint(keyserver_result.pubkey!)!;
-    Xss.sanitize_render('#status', `Original key KeyWords:<br/><span class="good">${mnemonic(Pgp.key.longid(keyserver_result.pubkey)!)}<br/>${Pgp.key.fingerprint(keyserver_result.pubkey, 'spaced')}</span>`); // all pubkeys on keyserver should have computable longid
+    Xss.sanitize_render('#status', `Original key KeyWords:<br/><span class="good">${mnemonic(keyserver_result.longid!)}<br/>${Pgp.key.fingerprint(keyserver_result.pubkey, 'spaced')}</span>`); // all pubkeys on keyserver should have computable longid
     $('#step_2b_manual_enter').css('display', 'block');
-    $('.action_request_replacement').click(Ui.event.prevent('double', request_replacement));
+    $('.action_request_replacement').click(Ui.event.prevent('double', async () => {
+      await request_replacement(keyserver_result.longid!);
+    }));
   }
 
 })();
