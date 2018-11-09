@@ -1,5 +1,7 @@
 <div>
 
+version 6.1.7 (stable only) on November 9, 2018: Reattest fix: https://github.com/FlowCrypt/flowcrypt-browser/issues/1328
+
 version 6.1.6 on November 2, 2018: <a href="https://github.com/FlowCrypt/flowcrypt-browser/milestone/271?closed=1" target="_blank">Draft Newlines Fix</a>
 
 version 6.1.5 on November 2, 2018: <a href="https://github.com/FlowCrypt/flowcrypt-browser/milestone/270?closed=1" target="_blank">Content Script Fix</a>
