@@ -16,8 +16,41 @@ import { Att } from './core/att.js';
 import { MsgBlock, KeyBlockType } from './core/mime.js';
 import { Settings } from './settings.js';
 
+// 1. doesn't work
+// file EXISTS.. copied, and sweetalert2.ds.ts in "path" in tsconfig.json:
+/*
+tsconfig.json
+paths : [ ..  
+      "sweetalert2" : [
+        "lib/sweetalert2.js",
+        "types/sweetalert2.d.ts"
+      ], ....
+    ]
+
+ ls -lad ./../../lib/sweetalert2.js
+-rw-rw-r-- 1 nuc nuc 78656 Feb  5 14:43 ./../../lib/sweetalert2.js
+cannot find declaration file.. where do I tell it to find the sweetalert2.d.ts file?
+*/
+// doesn't work, 
+import Swal from './../../lib/sweetalert2.js'
+
+// 2. doesn't work
+// npm install -D sweetalert2, doesn't work
+//import Swal from 'sweetalert2'
+/*
+Import not ending with .js in ../build/chrome-consumer/js/common/browser.js:
+--
+import { requireSweetAlert2 } from './../common/platform/require';
+
+*/
+
+/// 3. doesn't work.. loading as content-files and then requireSweetAlert = window[Swal] 
+//import { requireSweetAlert2 } from './../common/platform/require.js' //' platform/require.js';
+//const Swal = requireSweetAlert2();
+
 declare const openpgp: typeof OpenPGP;
 declare const qq: any;
+//declare const swal: typeof Swal;
 
 type Placement = 'settings' | 'settings_compose' | 'default' | 'dialog' | 'gmail' | 'embedded' | 'compose';
 type AttLimits = { count?: number, size?: number, size_mb?: number, oversize?: (newFileSize: number) => void };
@@ -218,6 +251,8 @@ export class Ui {
   public static EVENT_SPREE_MS = 50;
   public static EVENT_SLOW_SPREE_MS = 200;
   public static EVENT_VERY_SLOW_SPREE_MS = 500;
+
+  public static Swal = Swal;
 
   public static retryLink = (caption: string = 'retry') => `<a href="${Xss.escape(window.location.href)}">${Xss.escape(caption)}</a>`;
 

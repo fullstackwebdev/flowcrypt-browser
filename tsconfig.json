@@ -16,6 +16,10 @@
     "outDir": "build/chrome-consumer",
     "baseUrl": "./extension",
     "paths": {
+      "sweetalert2" : [
+        "lib/sweetalert2.js",
+        "types/sweetalert2.d.ts"
+      ],
       "jquery": [
         "lib/jquery.min.js",
         "COMMENT"
