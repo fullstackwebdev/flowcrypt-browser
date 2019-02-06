@@ -20,4 +20,4 @@ release/log.txt
 release/*
 package-lock.json
 npm-debug.log.vscode
-.vscode/
+.vscode
